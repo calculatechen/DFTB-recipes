@@ -238,6 +238,7 @@ changed via the ``MaxSccIterations`` option.
 
 # 为了找到基态平衡结构，通过迭代求解，知道原子电荷自洽地收敛。默认收敛限是构建哈密顿量的电荷与哈密顿量对角化后获得的电荷之间的差值低于1e-5，这个可以通过SccTolerance调整。最大迭代默认是100次，可以通过MaxSccIterations调整。如果未收敛，将使用目前为止获得的电荷计算总能量，并给出警告。
 
+# SK文件用于描述原子对之间的相互作用，必须指定每个成对的化学元素组合的SK文件。
 
 The tabulated integrals (together with other atomic and diatomic parameters)
 necessary for building the DFTB Hamiltonian are stored in the so called
@@ -263,6 +264,8 @@ file names by specifying only the generating pattern. The input::
 
 would generate exactly the same file names as in the example above.
 
+# 文件下载地址：https://dftb.org/parameters
+
 Historically the Slater-Koster file format did not contain any information about
 which valence orbitals were considered when generating the interaction tables,
 this can lead to data for physically inappropriate orbitals being included in
@@ -273,6 +276,8 @@ files. In the distributed standardised sets (available at http://www.dftb.org)
 this information is contained in the documentation appended to the end of each
 SK-file.
 
+# DFTB+默认电荷为0，可以修改Charge选项。默认极化度为0，可以修改SpinPolarisation选项。
+
 The default behaviour of the code is to assume that your system is neutral (net
 electrical charge of 0). If you would like to calculate charged systems, you
 have to use the ``Charge`` option. Similarly, the system is assumed to be
@@ -282,6 +287,7 @@ this standard behaviour.
 
 Analysis
 --------
+# Analysis一般只打印force的最大值，但可以使用CalculateForces来打印所有的force
 
 The ``Analysis`` block contains options to calculate (or display if otherwise
 only calculated internally) a number of properties. In this example, while
@@ -292,6 +298,7 @@ the forces.
 
 Options
 -------
+# Options块包含代码的一些全局设置
 
 The ``Options`` block contains a few global settings for the code. In the
 current example, no options are specified. You could even leave out the::
@@ -439,15 +446,16 @@ time. Congratulations!
 
 Examining the output
 ====================
-
+# DFTB+有两种输出，一种直接输出到终端（应该重定向到文件），还有一种输出到输出文件。
 DFTB+ communicates through two channels with you: by printing information to
 standard output (which you should redirect into a file to keep for later
 evaluation) and by writing information into various files. In the following, the
 most important of these files will be introduced and analysed
 
 
-Standard output
+Standard output 标准输出（这里指终端输出）
 ---------------
+# 首先输出程序标题
 
 The first thing appearing in standard output after the start of DFTB+ is the
 program header::
@@ -474,11 +482,13 @@ program header::
   |===============================================================================
 
   Reading input file 'dftb_in.hsd'
-  Parser version: 12
+  Parser version: 12  # 解析器版本
 
 This tells you which program you are using (DFTB+), which release (22.2) and the
 paper(s) associated with the code. Then the version of the parser used in this
 DFTB+ release is listed.
+
+# 最好dftb_pin.hsd显式地在ParserOptions项中写出解析器版本，如下所示
 
 As already discussed above, it can be a good habit to set this version number
 explicitly in your input inside the ``ParserOptions`` block, so that::
@@ -507,6 +517,8 @@ in the input. If you want to know which default values have been set for those
 missing specifications, you should look at the processed input file
 `dftb_pin.hsd`, which contains the value for all the possible input settings
 (see next the subsection).
+
+# 在终端打印出重要的计算参数
 
 At this point the DFTB+ code is initialised and the most important parameters
 of the calculation are printed out::
@@ -627,9 +639,11 @@ obtain::
   WARNING!
   -> !!! Geometry did NOT converge!
 
+# 如果在最大步数内没有收敛，就会有上面警告
 
 dftb_pin.hsd
 ------------
+# dftb_pin.hsd是由dftb_in.hsd生成的，它比原本的dftb_in.hsd更详细，就连原本未填写的缺省值也有，把dftb_pin.hsd改成dftb_in.hsd，完全可以作为DFTB+的输入文件
 
 As already mentioned, the processed input file `dftb_pin.hsd` is an input file
 generated from your `dftb_in.hsd` by including the default values for all
@@ -675,6 +689,8 @@ corresponding to the version of DFTB+ which generated the file.
 
 detailed.out
 ------------
+
+# 此文件包含有关系统属性的详细信息。它在运行期间不断更新，一直到计算结束时，它将包含在最后一次SCC周期中计算的值。
 
 This file contains detailed information about the properties of your system. It
 is updated continuously during the run, by the end of the calculation will
@@ -798,6 +814,8 @@ You should always make sure that this is true, so that the properties of your
 system have been calculated by using convergent charges. Values obtained by
 using non convergent charges are usually meaningless.
 
+# 应该始终确保SCC收敛，非收敛的结果往往是没有意义的
+
 Finally you get the forces on the atoms in your system.  You get also the
 maximal force component occurring in your system. After this, the dipole moment
 of the system (in atomic units and Debye) is printed where possible. The end of
@@ -827,6 +845,8 @@ found stored as xyz and gen format in the output files `geom.out.xyz` and
 band.out
 --------
 
+# 虽然名字叫band，但非周期性的普通分子也适用。它记录了分子轨道和能级，对于非周期性分子而言，k-point index和k-point weight忽略就可以。
+
 This file contains the energies of the individual electronic levels (orbitals)
 in electronvolts, followed by the occupation of the individual single particle
 levels for all of the possible spin channels. For spin unpolarised calculations
@@ -854,6 +874,8 @@ case).
 
 results.tag
 -----------
+
+# 如果希望提取计算结果，或者用于其他程序解析，必须加上WriteResultsTag = Yes选项，这样才会输出results.tag。因为detailed.out和band.out的输出格式会随DFTB+的版本发生变化，不适合用于脚本解析
 
 If you want to process the results of DFTB+ with another program, you should not
 extract the information from the standard output or the human readable output
