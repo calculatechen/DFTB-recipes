@@ -690,7 +690,7 @@ corresponding to the version of DFTB+ which generated the file.
 detailed.out
 ------------
 
-# 此文件包含有关系统属性的详细信息。它在运行期间不断更新，一直到计算结束时，它将包含在最后一次SCC周期中计算的值。
+# 此文件包含有关分子整体属性的详细信息。它在运行期间不断更新，一直到计算结束时，它将包含在最后一次SCC周期中计算的值。
 
 This file contains detailed information about the properties of your system. It
 is updated continuously during the run, by the end of the calculation will
