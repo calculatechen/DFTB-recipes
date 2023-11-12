@@ -124,6 +124,7 @@ not checked for any HSD constructs.) In the example above, the file
 
 Driver
 ------
+# Driver决定了如何改变构型，如果不想构型发生变化，则需要赋空值或者直接省略Driver模块
 
 After having specified the geometry of your system, you should decide what DFTB+
 will do with that geometry. The ``Driver`` environment determines how the
@@ -131,7 +132,7 @@ geometry should be changed (if at all) during the calculation. If you only would
 like to make a static calculation, you must either set it to an empty value
 like ::
 
-  Driver {}   # Empty value for the driver
+  Driver {}   # Empty value for the driver  # Driver赋空值的写法
 
 or omit the ``Driver`` block completely from `dftb_in.hsd`.
 
@@ -140,16 +141,18 @@ In the current example ::
   # Perform rational function based optimisation
   Driver = GeometryOptimization {
     Optimizer = Rational {}
-    MovedAtoms = 1:-1               # Move all atoms in the system
-    MaxSteps = 100                  # Stop after maximal 100 steps
-    OutputPrefix = "geom.out"       # Final geometry in geom.out.{xyz,gen}
-    Convergence {GradAMax = 1E-4}   # Stop if maximal force below 1E-4 H/a0
+    MovedAtoms = 1:-1               # Move all atoms in the system  # 所有原子都可以移动
+    MaxSteps = 100                  # Stop after maximal 100 steps  # 最大迭代100步
+    OutputPrefix = "geom.out"       # Final geometry in geom.out.{xyz,gen}  # 输出结果
+    Convergence {GradAMax = 1E-4}   # Stop if maximal force below 1E-4 H/a0  # 收敛限
   }
 
 the molecule is relaxed using a rational function based optimiser. The
 entire range of atoms from the first (atom 1) until and including the
 last (-1) is allowed to move. Instead of ``1:-1`` you could also have
-written::
+written:
+# 固定原子的三种方法
+: 
 
   MovedAtoms = 1:3               # Atoms from the 1st until the 3rd
 
