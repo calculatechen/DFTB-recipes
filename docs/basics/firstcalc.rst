@@ -98,11 +98,13 @@ parser).  The second column contains the type of each atom, given as the
 position of the appropriate element in the element list of the second line of
 the "gen" data.  The ``GenFormat{}`` is not the only way to specify the
 geometry, you should check the manual for other methods.
+
 # 还有xyzFormat和VaspFormat（见手册2.2节）
 
 As demonstrated above, it is possible to put arbitrary comments in the HSD input
 after a hash-mark (``#``) character. Everything between this character and the
 end of the current line is ignored by the parser.
+
 使用#作为注释符号，它可以在任意位置出现，不会影响程序
 
 Very often, the geometry is stored in an external file. To save you the copying
@@ -116,6 +118,7 @@ inclusion feature of the HSD format::
 The ``<<<`` operator includes the specified file as raw text data. (The file is
 not checked for any HSD constructs.) In the example above, the file
 `geometry.gen` *must* be in gen format.
+
 # 也可以通过上述方法直接引入文件，但必须确保geometry.gen是gen格式的。如果是xyzFormat，则需要是geometry.xyz，VaspFormat则需要是POSCAR
 
 
