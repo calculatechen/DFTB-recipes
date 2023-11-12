@@ -143,7 +143,7 @@ In the current example ::
     Optimizer = Rational {}
     MovedAtoms = 1:-1               # Move all atoms in the system  # 所有原子都可以移动
     MaxSteps = 100                  # Stop after maximal 100 steps  # 最大迭代100步
-    OutputPrefix = "geom.out"       # Final geometry in geom.out.{xyz,gen}  # 输出结果
+    OutputPrefix = "geom.out"       # Final geometry in geom.out.{xyz,gen}  # 输出结果，具体见本文下面内容
     Convergence {GradAMax = 1E-4}   # Stop if maximal force below 1E-4 H/a0  # 收敛限
   }
 
@@ -179,7 +179,7 @@ or ::
   GradAMax [Electronvolt/Angstrom] = 5.14e-3
 
 See the manual for the list of accepted modifiers and additional convergence
-criteria supported by the ``Convergence`` block.
+criteria supported by the ``Convergence`` block.  # 收敛的其他写法见手册2.3.1
 
 The ``MaxSteps`` keyword specifies the maximum number of geometry optimisation
 steps that the program can take before stopping, even if the specified tolerance
@@ -195,6 +195,9 @@ The `dptools` package distributed with DFTB+ contains scripts (`gen2xyz` and
 `xyz2gen`) to convert between the gen and the xyz formats (and various other
 formats).
 
+# 指定输出文件名，后缀有两种out.gen和out.xyz。dptools还会给出gen和xyz互相转换的脚本
+
+
 
 Hamiltonian
 -----------
@@ -205,15 +208,15 @@ lot, since it currently only supports types of Density Functional based Tight
 Binding Hamiltonians (with some extensions). In our example, the chosen
 self-consistent DFTB Hamiltonian has the following properties::
 
-  Hamiltonian = DFTB {                 # DFTB Hamiltonian
-    Scc = Yes                          # Use self-consistent charges
-    SlaterKosterFiles {                # Specifying Slater-Koster files
+  Hamiltonian = DFTB {                 # DFTB Hamiltonian  DFTB哈密顿
+    Scc = Yes                          # Use self-consistent charges  使用自洽电荷
+    SlaterKosterFiles {                # Specifying Slater-Koster files  指定SK文件
       O-O = "../../slakos/mio-ext/O-O.skf"
       O-H = "../../slakos/mio-ext/O-H.skf"
       H-O = "../../slakos/mio-ext/H-O.skf"
       H-H = "../../slakos/mio-ext/H-H.skf"
     }
-    MaxAngularMomentum {               # Maximal l-value of the various species
+    MaxAngularMomentum {               # Maximal l-value of the various species  各元素的最大L值
       O = "p"
       H = "s"
     }
@@ -232,6 +235,9 @@ reached within a certain number of iterations, the code calculates the total
 energy using the charges obtained so far and stops with an appropriate warning
 message. The maximal number of scc-iterations is by default 100, but can be
 changed via the ``MaxSccIterations`` option.
+
+# 为了找到基态平衡结构，通过迭代求解，知道原子电荷自洽地收敛。默认收敛限是构建哈密顿量的电荷与哈密顿量对角化后获得的电荷之间的差值低于1e-5，这个可以通过SccTolerance调整。最大迭代默认是100次，可以通过MaxSccIterations调整。如果未收敛，将使用目前为止获得的电荷计算总能量，并给出警告。
+
 
 The tabulated integrals (together with other atomic and diatomic parameters)
 necessary for building the DFTB Hamiltonian are stored in the so called
