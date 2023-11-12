@@ -17,6 +17,8 @@ understanding of the physics and chemistry of your quantum mechanical system.
 Making a DFTB+ calculation
 ==========================
 
+# 为了绘制电荷分布和轨道，必须打开WriteDetailedXML和WriteEigenvectors选项
+
 In order to plot the charge distribution or the orbitals in a certain system,
 you have to execute a DFTB+ calculation for this system first. The calculation
 must be executed as usual, you just have to make sure, that the options
@@ -71,9 +73,12 @@ additionaly the files ``detailed.xml`` and ``eigenvec.bin``. Former contains
 some information about the calculated system, latter contains the obtained
 eigenvectors in binary format. Both files are needed by waveplot.
 
+# 得到Detailed.xml和eigve.bin，前者包含计算信息，后者包含所获得的二进制格式的特征向量。WavePlot需要这两个文件。
 
 Running Waveplot
 ================
+
+# 绘制水分子的总电荷分布、最高占据分子轨道 (HOMO) 的电荷分布（波函数平方）、HOMO 的波函数以及总电荷差
 
 Now, you have to decide, what kind of charge distributions, wavefunctions etc.
 to plot. In the current example, we will plot the total charge distribution of
@@ -85,6 +90,7 @@ of neutral atomic densities.
 
 Input
 -----
+# 输入文件waveplot_in.hsd
 
 The appropriate waveplot input (``waveplot_in.hsd``) could look like the
 following::
@@ -123,24 +129,24 @@ following::
 Some notes to the input:
 
 * Option ``TotalChargeDensity`` controls the plotting of the total charge
-  density. If turned on, the file ``wp-abs2.cube`` is created.
+  density. If turned on, the file ``wp-abs2.cube`` is created. # 选项 TotalChargeDensity 控制总电荷密度的绘图。如果打开，则会创建文件 wp-abs2.cube。
 
 * Option ``TotalChargeDifference`` instructs Waveplot to plot the difference
   between the actual total charge density and the density you would obtain by
-  summing up the densities of the neutral atoms.
+  summing up the densities of the neutral atoms. # 选项 TotalChargeDifference 指示 Waveplot 绘制实际总电荷密度与通过中性原子密度求和获得的密度之间的差异。
 
 * Option ``ChargeDensity`` tells the code, that the charge distribution for some
   orbitals (specified later) should be plotted. Similarly, ``RealComponent``
   instructs Waveplot to create cube files for the real part of the one-electron
   wavefunctions for the specified orbitals. (For non-periodic systems the
-  wavefunctions are real.)
+  wavefunctions are real.)  # 选项 ChargeDensity 告诉代码，应该绘制某些轨道（稍后指定）的电荷分布。类似地，RealComponent 指示 Waveplot 为指定轨道的单电子波函数的实部创建立方体文件。 （对于非周期系统，波函数是实数。）
 
 * Options ``PlottedSpins``, ``PlottedLevels`` (for periodic systems also
   ``PlottedKPoints``) controls the levels (orbitals) to plot.  In the current
   example we are plotting level 4 (is the HOMO of the water molecule) for all
   available spins. Since the DFTB+ calculation was spin unpolarised, we obtain
   only one plot for the HOMO in file ``wp-1-1-4-abs2.cube`` (1-1-4 in the file
-  name indicates first K-point, first spin, 4th level).
+  name indicates first K-point, first spin, 4th level).  #选项 PlottedSpins、PlottedLevels（对于周期系统还有 PlottedKPoints）控制要绘制的能级（轨道）。由于 DFTB+ 计算是自旋非极化的，因此我们仅在文件 wp-1-1-4-abs2.cube 中获得 HOMO 的一个图（文件名中的 1-1-4 表示第一个 K 点、第一个自旋、第 4 级） ）。对水分子而言，轨道4是HOMO轨道。
 
 * The region to plot is selected with the option ``PlottedRegion``. Instead of
   specifying the box origin and box dimensions by hand, Waveplot can be
@@ -149,13 +155,13 @@ Some notes to the input:
   wavefunctions are not leaking out of it. (For details and other options for
   ``PlottedRegion`` please consult the manual.)  The selected region in the
   example is sampled by a mesh of 50 by 50 by
-  50.  (``NrOfPoints``)
+  50.  (``NrOfPoints``)  # 使用 PlottedRegion 选项选择要绘制的区域。 OptimalCuboid 方法指示 Waveplot 获取最小的长方体，该长方体包含所有原子及其周围足够的空间，以便波函数不会从中泄漏。 示例中的选定区域是通过 50 x 50 x 50 的网格进行采样的。(NrOfPoints)
 
 * The basis defintion (``Basis``) is made by including the file containing the
   appropriate wave function coefficient definitions.  You must make sure that
   you use the file for the same set, which you used during your DFTB+
   calculation. Here, the ``mio-1-1`` set was used for calculating the H2O
-  molecule, and therefore the file ``wfc.mio-1-1.hsd`` is included.
+  molecule, and therefore the file ``wfc.mio-1-1.hsd`` is included.  # Basis需要指定包含适当的波函数系数定义的文件。波函数系数通常可以从与 Slater-Koster 文件相同的位置下载。
 
   The wavefuntion coefficients can be usually downloaded from the same place as
   the Slater-Koster files.
@@ -231,33 +237,34 @@ Some notes on the output:
 * The warnings about unprocessed nodes appears, because the included file
   ``wfc.mio-0-1.hsd`` also contained wave function coefficients for elements (C,
   N, S), which are not present in the calculated system. Hence these extra
-  definitions in the file were ignored.
+  definitions in the file were ignored. # 出现有关未处理元素的警告，因为包含的文件 wfc.mio-0-1.hsd 还包含元素 (C、N、S) 的波函数系数，而水分子中不存在这些系数。因此，这些不存在的元素波函数系数被忽略。
 
 * The ``Total charge of atomic densities`` tells you the amount of charge found
   in the selected region, if atomic densities are superposed. This number should
   be approximately equal to the number of electrons in your system (here 8).
   There could be two reasons for a substantial deviation. Either the grid is not
   dense enough (option ``NrOfPoints``) or the box for the plotted region is too
-  small or misplaced (``PlottedRegion``).
+  small or misplaced (``PlottedRegion``). # Total charge of atomic densities应该等于分子的总电子数，水分子总电子数为8，出现偏差的原因可能有两个。网格不够密集（选项 NrOfPoints）或绘制区域的框太小或位置错误（PlottedRegion）。
 
 * The output files for the individual levels (charge density, real part,
-  imaginary part) follow the naming convention `wp-KPOINT-SPIN-LEVEL-TYPE.cube`.
+  imaginary part) follow the naming convention `wp-KPOINT-SPIN-LEVEL-TYPE.cube`.  # 各个能级（电荷密度、实部、虚部）的输出文件遵循命名约定 wp-KPOINT-SPIN-LEVEL-TYPE.cube。
 
   The total charge and the total charge difference are stored in the files
-  `wp-abs2.cube` and `wp-abs2diff.cube`, respectively.
+  `wp-abs2.cube` and `wp-abs2diff.cube`, respectively.  # 总电荷和总电荷差分别存储在文件 wp-abs2.cube 和 wp-abs2diff.cube 中。
 
 
-Visualising the results
+Visualising the results 
 =======================
 
 The volumetric data generated by Waveplot is in the Gaussian cube format and can
 be visualized with several graphical tools (VMD, JMol, ParaView, ...). Below we
 show the necessary steps to visualize it using VMD. (It refers to VMD version
-1.8.6 and may differ in newer versions.)
+1.8.6 and may differ in newer versions.) # cube数据可以使用VMD、JMol、ParaView 等图形工具可视化，这里使用VMD 1.8.6
 
 
-Total charge distribution
+Total charge distribution 总电荷分布
 -------------------------
+# 包含总电荷分布 wp-abs2.cube 的立方体文件可以通过使用 File|New Molecule 菜单读取。 成功加载后，VMD屏幕显示分子的骨架。
 
 The cube file containing the total charge distribution ``wp-abs2.cube`` can be
 read by using the ``File|New Molecule`` menu. VMD should automatically
@@ -287,7 +294,7 @@ color had been set to white using the ``Graphics|Colors`` menu.)
 
 
 
-Charge distribution difference
+Charge distribution difference 电荷分布差异
 ------------------------------
 
 The charge distribution difference can be plotted in a similar way as the total
@@ -312,8 +319,9 @@ the hydrogens to the oxygen (lone pair on the oxygen).
      the H2O molecule, as created by Waveplot and visualised by VMD.
 
 
-Molecular orbitals
+Molecular orbitals 分子轨道
 ------------------
+# 绘制轨道的电荷密度(概率分布)，则数据只包含正值，因此只需要一个等值面表示(就像电荷分布一样)。而要绘制波函数的实部(或对于周期系统也是虚部)，则需要两个等值面表示法，一个用于正值，另一个用于负值(如电荷差)。
 
 The plotting of molecular orbitals can be, depending which property is plotted,
 done in the same way as the total charge distribution or the total charge
