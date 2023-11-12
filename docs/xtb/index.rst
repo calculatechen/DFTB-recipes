@@ -9,6 +9,7 @@ This chapter will investigate some basic usage of the extended tight binding (xT
 
 Calculation setup
 =================
+# Hamiltonian需要设置合适的xTB集群，有GFN1-xTB、GFN2-xTB、IPEA1-xTB三种
 
 To make use of the extended tight binding Hamiltonian, the ``xTB`` group is set for the ``Hamiltonian`` group in the ``dftb_in.hsd``.
 
