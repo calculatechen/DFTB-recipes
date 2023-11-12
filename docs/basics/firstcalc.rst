@@ -147,12 +147,11 @@ In the current example ::
     Convergence {GradAMax = 1E-4}   # Stop if maximal force below 1E-4 H/a0  # 收敛限
   }
 
+# 固定原子的三种方法
 the molecule is relaxed using a rational function based optimiser. The
 entire range of atoms from the first (atom 1) until and including the
 last (-1) is allowed to move. Instead of ``1:-1`` you could also have
-written:
-# 固定原子的三种方法
-: 
+written:: 
 
   MovedAtoms = 1:3               # Atoms from the 1st until the 3rd
 
