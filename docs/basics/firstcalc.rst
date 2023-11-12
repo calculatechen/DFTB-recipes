@@ -82,7 +82,7 @@ manual.  In the current example, the geometry is ::
 
   Geometry = GenFormat {
     3  C                   # 3 atoms, non-periodic cluster
-     O H                   # Two elements, 1 - O, 2 - H
+     O H                   # Two elements, 1 - O, 2 - H  从1开始给每种元素类型编号
     #  Index Type  Coordinates
          1    1    0.00000000000E+00  -0.10000000000E+01   0.00000000000E+00
          2    2    0.00000000000E+00   0.00000000000E+00   0.78306400000E+00
