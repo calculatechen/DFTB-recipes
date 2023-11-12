@@ -24,8 +24,14 @@ Introduction
 The calculation of the band structure for a periodic system consists of two
 steps.
 
+
+# 1.对于自洽(SCC)计算，必须使用收敛的k点抽样来计算系统中的电荷
+
+
 * First for self-consistent (SCC) calculations, the charges in the system must
   be calculated using a converged k-point sampling.
+
+# 2.在保持所获得的自洽电荷不变的情况下，必须计算沿着所选能带结构的k空间中的特定直线选择的k点的单电子能级。它们通常位于该单胞的布里渊区的高对称点之间。
 
 * Then, keeping the obtained self-consistent charges fixed, the one-electron
   levels must be calculated for k-points chosen along the specific lines in
