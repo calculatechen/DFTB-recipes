@@ -3,6 +3,7 @@
 ****************************
 Band structure, DOS and PDOS
 ****************************
+# 如何使用DFTB+获得周期性(如线、表面或固体)的能带结构、态密度(DOS)和部分态密度(PDOS)
 
 This chapter demonstrates, using the example of anatase (|TiO2|), how the band
 structure, density of states (DOS) and the partial density of states (PDOS) of a
